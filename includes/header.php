@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Portfolio | Webdevelopment</title>
+    <!-- 1. Standard Search Engine Optimization (SEO) Meta Tags -->
+    <meta name="description" content="Personal portfolio and hobby website for Webdevelopment Technology course at Opole University of Technology.">
+    <meta name="keywords" content="portfolio, web development, politechnika opolska, hobby, html, css, js, php">
+    <meta name="author" content="Your Full Name"> <!-- Replace with your real name -->
+
+    <!-- 2. Open Graph (Social Media & Link Preview) Meta Tags -->
+    <meta property="og:title" content="My Hobby & Portfolio Page">
+    <meta property="og:description" content="Personal portfolio showcasing my hobby and web development technologies.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/profile.jpg">
     <link rel="stylesheet" href="css/style.css">
 
     <!-- Prevents flash of unstyled theme on page load -->

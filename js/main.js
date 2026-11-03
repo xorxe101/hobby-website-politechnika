@@ -78,4 +78,37 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // --- 3. Mandatory Cookie Consent Modal ---
+    const cookieOverlay = document.getElementById('cookie-overlay');
+    const acceptBtn = document.getElementById('accept-cookies');
+    const declineBtn = document.getElementById('decline-cookies');
+
+    // If no choice was made, display overlay and lock scroll
+    if (cookieOverlay && !localStorage.getItem('cookie_consent')) {
+        cookieOverlay.style.display = 'flex';
+        document.body.classList.add('cookie-locked');
+    }
+
+    const closeCookieModal = () => {
+        cookieOverlay.style.display = 'none';
+        document.body.classList.remove('cookie-locked');
+    };
+
+    if (acceptBtn) {
+        acceptBtn.addEventListener('click', () => {
+            localStorage.setItem('cookie_consent', 'accepted');
+            document.cookie = "cookie_consent=accepted; max-age=" + (86400 * 365) + "; path=/";
+            closeCookieModal();
+        });
+    }
+
+    if (declineBtn) {
+        declineBtn.addEventListener('click', () => {
+            localStorage.setItem('cookie_consent', 'declined');
+            document.cookie = "cookie_consent=declined; max-age=" + (86400 * 365) + "; path=/";
+            document.cookie = "visitor_name=; max-age=0; path=/";
+            closeCookieModal();
+        });
+    }
 });

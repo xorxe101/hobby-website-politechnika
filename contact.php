@@ -1,11 +1,16 @@
 <?php
-// 1. Start session to persist feedback across the redirect
 session_start();
 
 $feedback = '';
 $feedbackClass = '';
+$name = '';
+$email = '';
+$message = '';
 
-// Retrieve flash message from session if redirected
+// Check if visitor's name exists in cookie, fallback to empty string
+$savedName = isset($_COOKIE['visitor_name']) ? htmlspecialchars($_COOKIE['visitor_name']) : '';
+
+// Retrieve flash message from session after redirect
 if (isset($_SESSION['feedback'])) {
     $feedback = $_SESSION['feedback'];
     $feedbackClass = $_SESSION['feedbackClass'];
@@ -28,15 +33,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $feedback = 'Please provide a valid email address.';
         $feedbackClass = 'error';
     } else {
-        // Save to file
+        // Save clean string to file
         $entry = date('Y-m-d H:i:s') . " | Name: $rawName | Email: $rawEmail | Msg: $rawMessage" . PHP_EOL;
         file_put_contents('messages.txt', $entry, FILE_APPEND | LOCK_EX);
 
-        // Store flash message in session
+        // Store cookie for 30 days only if the user has accepted
+        if (isset($_COOKIE['cookie_consent']) && $_COOKIE['cookie_consent'] === 'accepted') {
+            setcookie('visitor_name', $rawName, time() + (86400 * 30), "/");
+        }
+
+        // Flash message
         $_SESSION['feedback'] = "Thank you, {$name}! Your message has been received successfully.";
         $_SESSION['feedbackClass'] = 'success';
 
-        // 2. Redirect to clean GET request (Post/Redirect/Get)
+        // PRG redirect
         header('Location: contact.php');
         exit;
     }
@@ -66,7 +76,7 @@ include 'includes/header.php';
                 id="name" 
                 name="name" 
                 placeholder="e.g. Alex Smith"
-                value="<?= $name ?? ''; ?>" 
+                value="<?= !empty($name) ? $name : ($savedName ?? ''); ?>" 
                 required
             >
             <span class="error-msg" id="name-error"></span>
