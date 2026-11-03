@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message = htmlspecialchars(trim($_POST['message'] ?? ''));
 
     // Basic validation
-    if (empty($name) || empty($email) \vert{}\vert{} empty($message)) {
+    if (empty($name) || empty($email) || empty($message)) {
         $feedback = 'All fields are required.';$feedbackClass = 'error';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $feedback = 'Please provide a valid email address.';$feedbackClass = 'error';
