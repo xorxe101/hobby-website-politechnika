@@ -8,14 +8,32 @@ if (toggleBtn) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Dark/Light Mode Toggle
+    // --- 1. Persistent Theme Toggle ---
     const themeBtn = document.getElementById('theme-toggle');
+    const rootElement = document.documentElement;
+
+    // Set button label based on current active theme
+    const updateButtonLabel = () => {
+        if (themeBtn) {
+            const isDark = rootElement.classList.contains('dark-theme');
+            themeBtn.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+        }
+    };
+
+    // Sync button text on page load
+    updateButtonLabel();
+
     if (themeBtn) {
         themeBtn.addEventListener('click', () => {
-            document.body.classList.toggle('dark-theme');
+            rootElement.classList.toggle('dark-theme');
+            
+            // Save current choice to localStorage
+            const isDark = rootElement.classList.contains('dark-theme');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+
+            updateButtonLabel();
         });
     }
-
     // 2. Client-side Form Validation
     const form = document.getElementById('contact-form');
     if (form) {
