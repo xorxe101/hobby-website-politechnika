@@ -1,6 +1,10 @@
 <?php include 'includes/header.php'; ?>
 
 <section class="hero-card">
+    <div class="avatar-container">
+        <img src="assets/profile.jpg" alt="Profile Picture" class="profile-pic">
+    </div>
+    
     <h1>Welcome to My Hobby Page</h1>
     <p class="hero-desc">
         Exploring web technologies through code, design, and interactive development.
