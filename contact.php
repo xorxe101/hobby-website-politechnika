@@ -1,18 +1,44 @@
 <?php
-$feedback = '';$feedbackClass = '';
+// 1. Start session to persist feedback across the redirect
+session_start();
+
+$feedback = '';
+$feedbackClass = '';
+
+// Retrieve flash message from session if redirected
+if (isset($_SESSION['feedback'])) {
+    $feedback = $_SESSION['feedback'];
+    $feedbackClass = $_SESSION['feedbackClass'];
+    unset($_SESSION['feedback'], $_SESSION['feedbackClass']);
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = htmlspecialchars(trim($_POST['name'] ?? ''));
-    $email = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
-    $message = htmlspecialchars(trim($_POST['message'] ?? ''));
+    $rawName    = trim($_POST['name'] ?? '');
+    $rawEmail   = trim($_POST['email'] ?? '');
+    $rawMessage = trim($_POST['message'] ?? '');
 
-    if (empty($name) || empty($email) || empty($message)) {
-        $feedback = 'All fields are required.';$feedbackClass = 'error';
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $feedback = 'Please provide a valid email address.';$feedbackClass = 'error';
+    $name    = htmlspecialchars($rawName);
+    $email   = filter_var($rawEmail, FILTER_SANITIZE_EMAIL);
+    $message = htmlspecialchars($rawMessage);
+
+    if (empty($rawName) || empty($rawEmail) || empty($rawMessage)) {
+        $feedback = 'All fields are required.';
+        $feedbackClass = 'error';
+    } elseif (!filter_var($rawEmail, FILTER_VALIDATE_EMAIL)) {
+        $feedback = 'Please provide a valid email address.';
+        $feedbackClass = 'error';
     } else {
-        $feedback = "Thanks {$name}! Your message has been sent.";
-        $feedbackClass = 'success';$name = $email =$message = '';
+        // Save to file
+        $entry = date('Y-m-d H:i:s') . " | Name: $rawName | Email: $rawEmail | Msg: $rawMessage" . PHP_EOL;
+        file_put_contents('messages.txt', $entry, FILE_APPEND | LOCK_EX);
+
+        // Store flash message in session
+        $_SESSION['feedback'] = "Thank you, {$name}! Your message has been received successfully.";
+        $_SESSION['feedbackClass'] = 'success';
+
+        // 2. Redirect to clean GET request (Post/Redirect/Get)
+        header('Location: contact.php');
+        exit;
     }
 }
 
