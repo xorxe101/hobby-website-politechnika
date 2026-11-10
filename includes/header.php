@@ -29,8 +29,13 @@
 <body>
     <header>
         <div class="nav-container">
+            <div class="brand-container">
+                <img src="assets/university_logo.png" alt="Politechnika Opolska" class="header-logo">
+                <span class="brand-text">Politechnika Opolska</span>
+            </div>
             <div class="nav-links">
                 <a href="index.php">Home</a>
+                <a href="about.php">Hobbies</a>
                 <a href="contact.php">Contact</a>
             </div>
             <button id="theme-toggle" type="button">Toggle Theme</button>

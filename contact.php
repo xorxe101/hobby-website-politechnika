@@ -108,7 +108,7 @@ include 'includes/header.php';
         </div>
 
         <button type="submit" class="btn submit-btn">
-            <span>Send Message &rarr;</span>
+            <span>Send Message</span>
         </button>
     </form>
 </div>
