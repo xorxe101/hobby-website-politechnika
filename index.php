@@ -1,4 +1,6 @@
-<?php include 'includes/header.php'; ?>
+<?php 
+date_default_timezone_set('Europe/Warsaw');
+include 'includes/header.php'; ?>
 
 <section class="hero-card">
     <div class="avatar-container">
